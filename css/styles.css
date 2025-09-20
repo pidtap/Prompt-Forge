@@ -74,7 +74,7 @@ body {
 }
 
 /* Buttons */
-button, .primary-btn {
+button, .primary-btn, .secondary-btn {
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
@@ -82,6 +82,10 @@ button, .primary-btn {
     font-size: 1rem;
     font-weight: 500;
     transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
 }
 
 button:disabled {
@@ -97,6 +101,17 @@ button:disabled {
 .primary-btn:hover:not(:disabled) {
     background-color: var(--primary-color-dark);
     box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+}
+
+.secondary-btn {
+    background-color: #333;
+    color: var(--text-secondary-color);
+    border: 1px solid var(--border-color);
+}
+
+.secondary-btn:hover:not(:disabled) {
+    background-color: #444;
+    color: var(--text-color);
 }
 
 .settings-btn {
@@ -156,7 +171,7 @@ button:disabled {
 .actions {
     display: flex;
     gap: 1rem;
-    margin-top: 1rem;
+    margin-top: 1.5rem;
     align-items: center;
     flex-wrap: wrap;
 }
@@ -240,9 +255,9 @@ textarea {
     position: relative;
     overflow: hidden;
     height: 160px;
-    width: 160px; /* Cố định chiều rộng bằng chiều cao */
-    margin: 1rem auto; /* Tự động căn giữa */
-    background-color: rgba(0, 0, 0, 0.2); /* Thêm nền nhẹ */
+    width: 160px;
+    margin: 1rem auto;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .image-upload-box:hover {
@@ -277,7 +292,7 @@ textarea {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain; /* Thay đổi ở đây */
+    object-fit: contain; 
     z-index: 10;
     border-radius: 8px;
 }
@@ -354,6 +369,8 @@ textarea {
     border: 1px solid var(--border-color);
     min-height: 80px;
     color: var(--text-color);
+    max-height: 250px;
+    overflow-y: auto;
 }
 
 #prompt-output-en {
@@ -499,55 +516,7 @@ textarea {
     color: var(--text-secondary-color);
 }
 
-/* --- 5. TÙY CHỌN SÁNG TẠO (PHÂN TÍCH ẢNH) --- */
-#analysis-options {
-    margin-top: 1.5rem;
-    padding: 1.25rem;
-    border-radius: 8px;
-    background-color: rgba(0, 0, 0, 0.2);
-    border: 1px solid var(--border-color);
-    animation: fadeIn 0.5s ease;
-}
-
-#analysis-options h4 {
-    margin-bottom: 1rem;
-    color: var(--primary-color);
-    font-weight: 700;
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 0.75rem;
-}
-
-#analysis-options h4 i { margin-right: 0.5rem; }
-.option-item { margin-bottom: 1rem; }
-.option-item:last-child { margin-bottom: 0; }
-.option-item label { font-weight: 500; color: var(--text-color); }
-.option-item label i { color: var(--text-secondary-color); margin-right: 0.5rem; width: 20px; text-align: center; }
-
-.form-control {
-    width: 100%;
-    padding: 10px;
-    margin-top: 0.5rem;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    background-color: #252525;
-    color: var(--text-color);
-    font-size: 0.95rem;
-    font-family: 'Be Vietnam Pro', sans-serif;
-}
-
-textarea.form-control { resize: vertical; }
-
-select.form-control {
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23BDBDBD%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
-    background-repeat: no-repeat;
-    background-position: right 1rem center;
-    background-size: .65em auto;
-    padding-right: 2.5rem;
-}
-
-/* --- 6. TÙY CHỌN CHECKBOX (Ý TƯỞNG) --- */
+/* --- 6. TÙY CHỌN CHECKBOX --- */
 .checkbox-container {
     display: flex;
     align-items: center;
@@ -580,4 +549,272 @@ select.form-control {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* --- 8. KHU VỰC TÙY CHỌN SÁNG TẠO --- */
+.creative-options-container {
+    margin-top: 1.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.options-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+    user-select: none;
+}
+
+.options-header h4 {
+    margin: 0;
+    color: var(--text-color);
+    font-weight: 500;
+}
+
+.options-header h4 i {
+    margin-right: 0.75rem;
+    color: var(--primary-color);
+}
+
+.arrow-icon {
+    font-size: 0.9rem;
+    transition: transform 0.3s ease-in-out;
+}
+
+.options-header.expanded .arrow-icon,
+legend.expanded .arrow-icon {
+    transform: rotate(90deg);
+}
+
+.options-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding 0.4s ease-in-out;
+    padding: 0 1rem;
+}
+
+.options-content.expanded {
+    padding: 1.5rem 1rem;
+    /* THAY ĐỔI: Giới hạn chiều cao tối đa */
+    max-height: 600px; 
+    /* THÊM MỚI: Tự động hiện thanh trượt dọc khi cần */
+    overflow-y: auto;  
+}
+
+.options-content .form-group {
+    margin-bottom: 1rem;
+}
+
+.options-content .form-group label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary-color);
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.options-content .form-group input[type="text"],
+.options-content .form-group select {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    background-color: #252525;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.options-content fieldset {
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-top: none;
+}
+
+.options-content legend {
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    width: 100%;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    margin-bottom: 0;
+}
+
+.fieldset-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out, padding-top 0.4s ease-in-out, margin-top 0.4s ease-in-out;
+    padding-top: 0;
+    margin-top: 0;
+}
+
+.fieldset-content.expanded {
+    max-height: 1000px;
+    padding-top: 1rem;
+    margin-top: -1px;
+}
+
+/* --- 9. CÁC TINH CHỈNH GIAO DIỆN MỚI --- */
+
+/* Cải thiện khoảng cách và thêm đường phân cách cho các item trong list box */
+.options-content .form-group select option {
+    /* Tăng khoảng đệm bên trong mỗi mục. 
+       Lưu ý: Thuộc tính này hoạt động tốt nhất trên trình duyệt Safari (macOS) 
+       và có thể không hiển thị trên Chrome/Edge. */
+    padding: 8px 12px;
+
+    /* Thêm một đường kẻ mỏng bên dưới mỗi mục để tạo hiệu ứng phân cách.
+       Lưu ý: Hỗ trợ của trình duyệt cho thuộc tính này rất hạn chế. */
+    border-bottom: 1px solid var(--border-color); 
+}
+
+/* Thêm một chút khoảng trống cho chính hộp chọn để giao diện thoáng hơn */
+.options-content .form-group select {
+    padding: 4px; 
+}
+
+
+/* Định dạng thanh trượt cho trình duyệt WebKit (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #252525;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 10px;
+    border: 2px solid #252525;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-color);
+}
+
+/* Định dạng thanh trượt cho Firefox */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #555 #252525;
+}
+/* --- 10. GIAO DIỆN RADIO BUTTON TÙY CHỈNH (NÂNG CẤP) --- */
+.radio-group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.75rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    
+    /* THÊM MỚI: Giới hạn chiều cao và thêm thanh trượt khi cần */
+    max-height: 195px; /* Chiều cao tối đa, tương đương khoảng 4 item */
+    overflow-y: auto; /* Tự động hiện thanh trượt dọc khi nội dung vượt quá */
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.radio-option:hover {
+    background-color: rgba(74, 144, 226, 0.1);
+}
+
+.radio-option input[type="radio"] {
+    display: none;
+}
+
+.radio-option .radio-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    margin-right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.radio-option .radio-custom::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+    transform: scale(0);
+    transition: transform 0.2s ease;
+}
+
+.radio-option input[type="radio"]:checked + .radio-custom {
+    border-color: var(--primary-color);
+}
+
+.radio-option input[type="radio"]:checked + .radio-custom::after {
+    transform: scale(1);
+}
+
+.radio-option label {
+    color: var(--text-secondary-color);
+    margin: 0;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+
+.radio-option input[type="radio"]:checked ~ label {
+    color: var(--primary-color);
+    font-weight: 700;
+}
+
+/* Bố cục cho màn hình lớn (laptop) */
+@media (min-width: 768px) {
+    /* Bố cục 2 cột cho radio button */
+    .radio-group-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; 
+        gap: 0.5rem; 
+    }
+
+    /* Bố cục 2 cột cho các ô input text */
+    .fieldset-content {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        /* THAY ĐỔI: Thêm khoảng cách cho cả hàng và cột */
+        gap: 1rem 1.5rem; 
+    }
+
+    /* THÊM MỚI: Bỏ margin thừa khi các ô input nằm trong lưới */
+    .fieldset-content > .form-group {
+        margin-bottom: 0;
+    }
+
+    /* Đảm bảo các danh mục con (vd: 2.1, 2.2) luôn chiếm đủ chiều rộng */
+    .fieldset-content > fieldset {
+        grid-column: 1 / -1; 
+    }
+
+    /* Đảm bảo nhóm radio cũng chiếm đủ chiều rộng */
+    .fieldset-content .form-group:has(.radio-group-container) {
+        grid-column: 1 / -1;
+    }
 }
