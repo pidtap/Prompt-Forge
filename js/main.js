@@ -331,13 +331,12 @@ document.addEventListener('DOMContentLoaded', () => {
         generatePromptBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang tạo...`;
         try {
             let userFilledTheme;
+            let themeKey;
             if (activeTabId === 'tab-idea') {
                 const idea = ideaInput.value.trim();
                 if (!idea) throw new Error("Vui lòng nhập ý tưởng chính!");
-                const themeKey = prehistoricCheckboxIdea.checked ? 'prehistoric' : 'general';
+                themeKey = prehistoricCheckboxIdea.checked ? 'prehistoric' : 'general';
                 userFilledTheme = rebuildThemeFromForm(themeKey, 'idea');
-                
-                // **THAY ĐỔI CỐT LÕI: Thêm chỉ thị đặc biệt cho AI**
                 mainInstruction = `Your primary task is to write two descriptive paragraphs (one Vietnamese, one English).
 
                 **--- KEY CONTEXT RULE ---**
@@ -349,18 +348,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${JSON.stringify(userFilledTheme, null, 2)}
 
                 **Your Instructions**:
-                1.  Apply the **KEY CONTEXT RULE** above.
-                2.  Creatively fill in any attribute where the "value" is empty (e.g., "value": "") to be consistent with the core idea and the chosen theme.
-                3.  Synthesize ALL attributes (both pre-filled and the ones you generated) into a single, rich paragraph.
-                4.  Provide this paragraph in both Vietnamese and English.
-                5.  Adhere strictly to the Output Rules.
+                1. Apply the **KEY CONTEXT RULE** above.
+                2. Creatively fill in any attribute where the "value" is empty (e.g., "value": "") to be consistent with the core idea and the chosen theme.
+                3. Synthesize ALL attributes (both pre-filled and the ones you generated) into a single, rich paragraph.
+                4. Provide this paragraph in both Vietnamese and English.
+                5. Adhere strictly to the Output Rules.
                 
                 ${outputRules}`;
-                
                 partsForGemini.push({ text: mainInstruction });
-
             } else if (activeTabId === 'tab-image-analysis') {
-                const themeKey = prehistoricCheckboxAnalysis.checked ? 'prehistoric' : 'general';
+                themeKey = prehistoricCheckboxAnalysis.checked ? 'prehistoric' : 'general';
                 userFilledTheme = rebuildThemeFromForm(themeKey, 'analysis');
                 mainInstruction = `You are a creative writer. Based on the detailed information in the following completed JSON object, weave all details into a single, flowing descriptive paragraph (in Vietnamese and English). **JSON Data to Use**: ${JSON.stringify(userFilledTheme, null, 2)} ${outputRules}`;
                 partsForGemini.push({ text: mainInstruction });

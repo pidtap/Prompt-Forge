@@ -1,108 +1,70 @@
 export const promptConfig = {
+  // Cấu trúc mặc định: Linh hoạt, hiện đại, phù hợp cho mọi chủ thể.
   general: {
-    "1. Định danh chủ thể": {
-      "Giới tính": { "placeholder": "Ví dụ: Nam, Nữ, Cặp đôi...", "value": "" },
-      "Độ tuổi": { "placeholder": "Ví dụ: 25 tuổi, thanh niên, người già...", "value": "" }
+    "1. Chủ thể chính (Main Subject)": {
+      "Loại chủ thể": { "placeholder": "Con người, động vật, robot, quái vật, đồ vật...", "value": "" },
+      "Số lượng & Tương tác": { "placeholder": "Một mình, một cặp đôi đang trò chuyện, một nhóm...", "value": "" }
     },
-    "2. Ngoại hình & Hình dáng": {
-      "2.1 Khuôn mặt": {
-        "Hình dạng": { "placeholder": "Trái xoan, tròn, vuông...", "value": "" },
-        "Da": { "placeholder": "Trắng mịn, ngăm đen, tàn nhang...", "value": "" },
-        "Mắt": { "placeholder": "Nâu sẫm, xanh biếc, một mí...", "value": "" },
-        "Mũi": { "placeholder": "Cao, thẳng, tẹt...", "value": "" },
-        "Miệng": { "placeholder": "Môi đầy đặn, mỉm cười...", "value": "" },
-        "Tóc & râu": { "placeholder": "Tóc đen dài, râu quai nón...", "value": "" }
+    "2. Đặc điểm Vật lý (Physical Attributes)": {
+      "2.1 Hình dáng & Kích thước": {
+        "Hình dáng tổng thể": { "placeholder": "Cao, lùn, to lớn, mảnh mai, tròn, góc cạnh...", "value": "" },
+        "Tỷ lệ & Cấu trúc": { "placeholder": "Cân đối, đầu to, tay chân dài, cấu trúc cơ khí phức tạp...", "value": "" }
       },
-      "2.2 Cơ thể": {
-        "Tư thế": { "placeholder": "Đứng thẳng, ngồi, đang chạy...", "value": "" },
-        "Tỷ lệ": { "placeholder": "Cao, gầy, lùn, cân đối...", "value": "" },
-        "Thể hình": { "placeholder": "Cơ bắp, mảnh mai, mập mạp...", "value": "" }
-      },
-      "2.3 Trang phục": {
-        "Loại": { "placeholder": "Váy dạ hội, áo giáp, đồ bơi...", "value": "" },
-        "Màu sắc": { "placeholder": "Đỏ rực, xanh lam, trắng tinh...", "value": "" },
-        "Chất liệu": { "placeholder": "Satin, da, lụa, kim loại...", "value": "" }
-      },
-      "2.4 Phụ kiện": {
-        "Vũ khí": { "placeholder": "Kiếm, cung tên, súng...", "value": "" },
-        "Trang sức": { "placeholder": "Vòng cổ, hoa tai, nhẫn...", "value": "" },
-        "Đạo cụ": { "placeholder": "Sách, ly rượu, quả cầu...", "value": "" }
+      "2.2 Vật liệu & Bề mặt": {
+        "Chất liệu cấu thành": { "placeholder": "Hữu cơ, kim loại, đá, gỗ, năng lượng...", "value": "" },
+        "Đặc điểm bề mặt": { "placeholder": "Nhẵn bóng, thô ráp, có vết sẹo, trong suốt, phát sáng...", "value": "" },
+        "Màu sắc & Họa tiết": { "placeholder": "Đỏ rực, xanh lam, vằn, ngụy trang, ánh kim, đa sắc...", "value": "" }
       }
     },
-    "3. Trạng thái & Hành động": {
-      "Tư thế": { "placeholder": "Đứng hiên ngang, ngồi trầm tư...", "value": "" },
-      "Hành động": { "placeholder": "Đang đọc sách, chiến đấu...", "value": "" },
-      "Biểu cảm": { "placeholder": "Vui vẻ, buồn bã, giận dữ...", "value": "" }
+    "3. Hành vi & Trạng thái (Behavior & State)": {
+      "Tư thế & Chuyển động": { "placeholder": "Đứng, ngồi, bay, chiến đấu, lén lút, bất động...", "value": "" },
+      "Biểu cảm & Tâm trạng": { "placeholder": "Vui, buồn, giận dữ, tò mò, vô cảm, máy móc...", "value": "" },
+      "Hành động & Mục đích": { "placeholder": "Đang quan sát, chế tạo một vật, uống nước, quét radar...", "value": "" }
     },
-    "4. Bối cảnh & Môi trường": {
-      "Không gian": { "placeholder": "Trong lâu đài, ngoài bãi biển...", "value": "" },
-      "Thời gian": { "placeholder": "Hoàng hôn, ban đêm, quá khứ...", "value": "" },
-      "Yếu tố phụ": { "placeholder": "Mưa, tuyết, sương mù...", "value": "" }
+    "4. Môi trường & Bối cảnh (Environment & Context)": {
+      "Địa điểm": { "placeholder": "Trong rừng rậm, thành phố cyberpunk, vũ trụ, phòng thí nghiệm...", "value": "" },
+      "Thời gian & Thời tiết": { "placeholder": "Hoàng hôn, bão tuyết, tương lai xa, giữa trưa...", "value": "" },
+      "Không khí & Cảm giác": { "placeholder": "Bí ẩn, hùng vĩ, hỗn loạn, tĩnh lặng, công nghệ cao...", "value": "" }
     },
-    "5. Phong cách & Nghệ thuật": {
-        "Lựa chọn Phong cách": {
-            "Phong cách nghệ thuật": { "placeholder": "-- Chọn Phong cách --", "options": "Nhiếp ảnh chân thực, Điện ảnh, Anime, 3D Render, Nghệ thuật số, Tranh sơn dầu, Tranh màu nước, Concept Art, Cyberpunk, Steampunk, Fantasy, Low Poly, Hyperrealism", "value": "" }
-        },
-        "Lựa chọn Ánh sáng": {
-            "Ánh sáng": { "placeholder": "-- Chọn Ánh sáng --", "options": "Tự nhiên ban ngày, Giờ vàng hoàng hôn, Ánh trăng, Đèn Neon, Ánh nến, Mây mù u ám, Studio", "value": "" }
-        },
-        "Chất lượng & Tiêu cự": {
-            "Tùy chọn": { "placeholder": "-- Chọn Chất lượng --", "options": "Siêu chi tiết (Hyperdetailed), 8K, Lấy nét sắc cạnh (Sharp focus), Lấy nét mềm (Soft focus)", "value": "" }
-        },
-        "Tỉ lệ khung hình": {
-            "Tỉ lệ": { "placeholder": "-- Chọn Tỉ lệ --", "options": "16:9, 9:16, 1:1, 4:3, 21:9", "value": "" }
-        }
+    "5. Phong cách & Kỹ thuật (Style & Technique)": {
+      "Phong cách nghệ thuật": { "Lựa chọn": { "options": "Nhiếp ảnh chân thực, Điện ảnh, Anime, 3D Render, Nghệ thuật số, Tranh sơn dầu, Tranh màu nước, Concept Art, Cyberpunk, Steampunk, Fantasy, Low Poly, Hyperrealism", "value": "" }},
+      "Ánh sáng": { "Lựa chọn": { "options": "Tự nhiên ban ngày, Giờ vàng hoàng hôn, Ánh trăng, Đèn Neon, Ánh nến, Mây mù u ám, Studio", "value": "" }},
+      // THÊM MỚI
+      "Góc Nhìn & Phối Cảnh": { "Lựa chọn": { "options": "Cận cảnh (Close-up), Chân dung (Portrait), Toàn cảnh (Full shot), Viễn cảnh (Long shot), Nhìn từ trên xuống (High-angle), Nhìn từ dưới lên (Low-angle), Ngang tầm mắt (Eye-level)", "value": "" }},
+      "Chất lượng & Tiêu cự": { "Lựa chọn": { "options": "Siêu chi tiết (Hyperdetailed), 8K, Lấy nét sắc cạnh (Sharp focus), Lấy nét mềm (Soft focus)", "value": "" }},
+      "Tỉ lệ khung hình": { "Lựa chọn": { "options": "16:9, 9:16, 1:1, 4:3, 21:9", "value": "" }}
     }
   },
+
+  // Cấu trúc Tiền sử: Linh hoạt cho mọi chủ thể trong bối cảnh hoang dã, nguyên thủy.
   prehistoric: {
-     "1. Định danh chủ thể": {
-      "Giới tính": { "placeholder": "Nam, Nữ...", "value": "" },
-      "Độ tuổi ước tính": { "placeholder": "Trưởng thành, thanh niên...", "value": "" }
+     "1. Chủ thể & Phân loại khoa học": {
+      "Tên chủ thể / Giống loài": { "placeholder": "Homo habilis, Tyrannosaurus Rex, Smilodon, Trilobite...", "value": "" },
+      "Kỷ nguyên / Niên đại": { "placeholder": "Kỷ Jura, Kỷ Phấn trắng, Thế Pleistocene...", "value": "" }
     },
-    "2. Mô tả hình thái (Morphology)": {
-        "2.1 Đầu & Mặt (Cranium & Face)": {
-            "Hộp sọ": { "placeholder": "Dốc, có gờ mày...", "value": "" },
-            "Da": { "placeholder": "Sần sùi, chai sạn...", "value": "" },
-            "Mắt": { "placeholder": "Sâu, cảnh giác...", "value": "" },
-            "Hàm & Răng": { "placeholder": "Hàm prognathic, răng khỏe...", "value": "" }
+    "2. Mô tả Hình thái & Giải phẫu": {
+        "2.1 Cấu trúc cơ thể": {
+            "Kích thước & Tầm vóc": { "placeholder": "Cao 2 mét, dài 12 mét, nặng 8 tấn, khổng lồ...", "value": "" },
+            "Đặc điểm xương khớp": { "placeholder": "Hộp sọ lớn, gờ mày nổi rõ, chi trước ngắn, có gai trên lưng...", "value": "" }
         },
-        "2.2 Cấu trúc cơ thể": {
-            "Tư thế": { "placeholder": "Hơi khom, đứng thẳng...", "value": "" },
-            "Tỷ lệ": { "placeholder": "Tay dài, chân ngắn...", "value": "" },
-            "Thể hình": { "placeholder": "Chắc nịch, cơ bắp...", "value": "" }
-        },
-        "2.3 Trang phục thô sơ": {
-            "Loại": { "placeholder": "Da thú...", "value": "Da thú" },
-            "Cách mặc": { "placeholder": "Khoác qua vai...", "value": "" }
-        },
-        "2.4 Công cụ & Vũ khí": {
-            "Vũ khí": { "placeholder": "Giáo đá, rìu đá...", "value": "" },
-            "Công cụ": { "placeholder": "Đá lửa, dụng cụ mài...", "value": "" }
+        "2.2 Đặc điểm Sinh học & Bề mặt": {
+            "Lớp da/vỏ/lông": { "placeholder": "Da có vảy sừng, lông vũ nguyên thủy, vỏ giáp xương, bộ lông dày...", "value": "" },
+            "Vũ khí tự nhiên": { "placeholder": "Răng nanh dài, móng vuốt sắc nhọn, sừng, đuôi có gai...", "value": "" },
+            "Màu sắc & Ngụy trang": { "placeholder": "Màu đất, hoa văn đốm để ẩn nấp, màu sặc sỡ để giao phối...", "value": "" }
         }
     },
-     "3. Trạng thái & Hành động": {
-      "Tư thế": { "placeholder": "Đang săn, ngồi nghỉ...", "value": "" },
-      "Hành động": { "placeholder": "Mài đá, đốt lửa...", "value": "" },
-      "Biểu cảm": { "placeholder": "Tập trung, cảnh giác...", "value": "" }
+     "3. Hành vi & Môi trường sống": {
+      "Hành vi điển hình": { "placeholder": "Săn mồi theo đàn, ăn cỏ, làm tổ, di cư, phục kích...", "value": "" },
+      "Môi trường sống (Habitat)": { "placeholder": "Rừng rậm nhiệt đới, đầm lầy, đồng bằng ngập nước, hang động...", "value": "" },
+      "Không khí & Cảm giác": { "placeholder": "Nguyên thủy, nguy hiểm, tĩnh lặng, hùng vĩ, hoang vu...", "value": "" }
     },
-    "4. Bối cảnh (Prehistoric Environment)": {
-      "Không gian": { "placeholder": "Lối vào hang, lãnh nguyên...", "value": "" },
-      "Thời gian": { "placeholder": "Bình minh kỷ băng hà...", "value": "" },
-      "Yếu tố phụ": { "placeholder": "Voi ma mút ở xa, núi lửa...", "value": "" }
-    },
-    "5. Phong cách & Nghệ thuật": {
-      "Lựa chọn Phong cách": {
-          "Phong cách nghệ thuật": { "placeholder": "-- Chọn Phong cách --", "options": "Nhiếp ảnh chân thực, Điện ảnh, Anime, 3D Render, Nghệ thuật số, Tranh sơn dầu, Tranh màu nước, Concept Art, Cyberpunk, Steampunk, Fantasy, Low Poly, Hyperrealism", "value": "" }
-      },
-      "Lựa chọn Ánh sáng": {
-          "Ánh sáng": { "placeholder": "-- Chọn Ánh sáng --", "options": "Tự nhiên ban ngày, Giờ vàng hoàng hôn, Ánh trăng, Đèn Neon, Ánh nến, Mây mù u ám, Studio", "value": "" }
-      },
-      "Chất lượng & Tiêu cự": {
-          "Tùy chọn": { "placeholder": "-- Chọn Chất lượng --", "options": "Siêu chi tiết (Hyperdetailed), 8K, Lấy nét sắc cạnh (Sharp focus), Lấy nét mềm (Soft focus)", "value": "" }
-      },
-      "Tỉ lệ khung hình": {
-          "Tỉ lệ": { "placeholder": "-- Chọn Tỉ lệ --", "options": "16:9, 9:16, 1:1, 4:3, 21:9", "value": "" }
-      }
+    "4. Phong cách & Kỹ thuật": {
+      "Phong cách nghệ thuật": { "Lựa chọn": { "options": "Nhiếp ảnh chân thực, Điện ảnh, Anime, 3D Render, Nghệ thuật số, Tranh sơn dầu, Tranh màu nước, Concept Art, Cyberpunk, Steampunk, Fantasy, Low Poly, Hyperrealism", "value": "" }},
+      "Ánh sáng": { "Lựa chọn": { "options": "Tự nhiên ban ngày, Giờ vàng hoàng hôn, Ánh trăng, Đèn Neon, Ánh nến, Mây mù u ám, Studio", "value": "" }},
+      // THÊM MỚI
+      "Góc Nhìn & Phối Cảnh": { "Lựa chọn": { "options": "Cận cảnh (Close-up), Chân dung (Portrait), Toàn cảnh (Full shot), Viễn cảnh (Long shot), Nhìn từ trên xuống (High-angle), Nhìn từ dưới lên (Low-angle), Ngang tầm mắt (Eye-level)", "value": "" }},
+      "Chất lượng & Tiêu cự": { "Lựa chọn": { "options": "Siêu chi tiết (Hyperdetailed), 8K, Lấy nét sắc cạnh (Sharp focus), Lấy nét mềm (Soft focus)", "value": "" }},
+      "Tỉ lệ khung hình": { "Lựa chọn": { "options": "16:9, 9:16, 1:1, 4:3, 21:9", "value": "" }}
     }
   }
 };
