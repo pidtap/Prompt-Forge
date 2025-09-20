@@ -1,0 +1,583 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&display=swap');
+
+/* --- 1. BIẾN CHUNG & THIẾT LẬP GỐC --- */
+:root {
+    --primary-color: #4A90E2;
+    --primary-color-dark: #357ABD;
+    --background-color: #121212;
+    --surface-color: #1E1E1E;
+    --text-color: #E0E0E0;
+    --text-secondary-color: #BDBDBD;
+    --border-color: #333;
+    --success-color: #28a745;
+    --error-color: #E94B3C;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background-color: var(--background-color);
+    background-image: radial-gradient(circle at top left, rgba(74, 144, 226, 0.1), transparent 30%),
+                      radial-gradient(circle at bottom right, rgba(74, 144, 226, 0.1), transparent 40%);
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* --- 2. LAYOUT CHÍNH --- */
+.container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* --- 3. CÁC THÀNH PHẦN (COMPONENTS) --- */
+
+/* Header */
+.site-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    padding: 0.5rem 0;
+}
+
+.logo h1 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    margin: 0;
+}
+
+.logo .subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary-color);
+    margin-top: -5px;
+}
+
+/* Sections */
+.input-section {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.section-description {
+    color: var(--text-secondary-color);
+    margin-bottom: 1.5rem;
+    font-size: 0.95rem;
+}
+
+/* Buttons */
+button, .primary-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.primary-btn {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.primary-btn:hover:not(:disabled) {
+    background-color: var(--primary-color-dark);
+    box-shadow: 0 0 15px rgba(74, 144, 226, 0.5);
+}
+
+.settings-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: linear-gradient(145deg, #2a2a2a, #1a1a1a);
+    color: var(--text-color);
+    padding: 12px 24px;
+    border-radius: 999px;
+    border: 1px solid var(--border-color);
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.settings-btn i {
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.settings-btn:hover:not(:disabled) {
+    background: linear-gradient(145deg, #333, #222);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+.settings-btn:hover:not(:disabled) i {
+    transform: rotate(15deg);
+}
+
+.copy-btn {
+    background-color: #333;
+    color: var(--text-secondary-color);
+    border: 1px solid var(--border-color);
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 8px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.copy-btn:hover {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.copy-btn.copied {
+    background-color: var(--success-color);
+    color: white;
+}
+
+/* Forms & Inputs */
+.actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary-color);
+}
+
+textarea,
+.modal-content input[type="password"] {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: #252525;
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+textarea {
+    resize: vertical;
+}
+
+.modal-content input[type="password"] {
+    padding: 10px;
+    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Tabs Interface */
+.tab-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.tab-btn {
+    padding: 12px 20px;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--text-secondary-color);
+    border: none;
+    border-bottom: 3px solid transparent;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tab-btn:hover {
+    color: var(--text-color);
+}
+
+.tab-btn.active {
+    color: var(--primary-color);
+    border-bottom-color: var(--primary-color);
+    font-weight: 700;
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+/* Image Upload Area */
+.image-upload-box {
+    border: 2px dashed var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    height: 160px;
+    width: 160px; /* Cố định chiều rộng bằng chiều cao */
+    margin: 1rem auto; /* Tự động căn giữa */
+    background-color: rgba(0, 0, 0, 0.2); /* Thêm nền nhẹ */
+}
+
+.image-upload-box:hover {
+    border-color: var(--primary-color);
+    background-color: rgba(74, 144, 226, 0.05);
+}
+
+.file-input {
+    display: none;
+}
+
+.file-label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: var(--text-secondary-color);
+    height: 100%;
+    transition: opacity 0.3s ease;
+}
+
+.file-label i {
+    font-size: 2rem;
+    color: var(--primary-color);
+}
+
+.image-preview {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Thay đổi ở đây */
+    z-index: 10;
+    border-radius: 8px;
+}
+
+.image-upload-box.has-image .image-preview {
+    display: block;
+}
+
+.image-upload-box.has-image .file-label {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    z-index: 11;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    padding: 1rem;
+}
+
+.image-upload-box.has-image:hover .file-label {
+    opacity: 1;
+}
+
+.delete-image-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 12;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    opacity: 0;
+    transform: scale(0.8);
+    visibility: hidden;
+}
+
+.image-upload-box.has-image:hover .delete-image-btn {
+    opacity: 1;
+    transform: scale(1);
+    visibility: visible;
+}
+
+.delete-image-btn:hover {
+    background-color: var(--error-color);
+    transform: scale(1.1) rotate(90deg);
+}
+
+/* Prompt Results */
+.prompt-result-wrapper {
+    position: relative;
+}
+
+#prompt-output-vi,
+#prompt-output-en {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-all;
+    background-color: #1a1a1a;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    min-height: 80px;
+    color: var(--text-color);
+}
+
+#prompt-output-en {
+    padding-right: 55px;
+}
+
+.prompt-result-wrapper .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+/* Modals */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: var(--surface-color);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    position: relative;
+}
+
+.close-btn {
+    color: #aaa;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Custom Alert Modal */
+.alert-content {
+    max-width: 450px;
+    text-align: center;
+    padding-top: 2.5rem;
+}
+
+.alert-content p {
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+    line-height: 1.7;
+}
+
+#custom-alert-close-btn {
+    min-width: 100px;
+}
+
+.alert-content::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    font-size: 2.5rem;
+    position: absolute;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--surface-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    border: 3px solid;
+}
+
+.alert-content.success::before { content: "\f058"; color: var(--success-color); border-color: var(--success-color); }
+.alert-content.error::before { content: "\f06a"; color: var(--error-color); border-color: var(--error-color); }
+.alert-content.info::before { content: "\f05a"; color: var(--primary-color); border-color: var(--primary-color); }
+
+/* --- 4. FOOTER --- */
+.site-footer {
+    padding: 2.5rem 1rem 1rem;
+    margin-top: 3rem;
+    background-color: var(--surface-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-grid {
+    max-width: 900px;
+    margin: 0 auto 2rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    text-align: left;
+}
+
+.footer-grid h3 {
+    color: var(--text-color);
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+.footer-grid p, .contact-list {
+    color: var(--text-secondary-color);
+    font-size: 0.9rem;
+}
+
+.contact-list { list-style: none; padding: 0; }
+.contact-list li { display: flex; align-items: center; margin-bottom: 0.5rem; }
+.contact-list i { color: var(--primary-color); margin-right: 0.8rem; width: 20px; text-align: center; }
+.social-icons { display: flex; gap: 1rem; }
+.social-icons a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #333;
+    color: var(--text-color);
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-3px);
+}
+
+.footer-bottom {
+    text-align: center;
+    padding-top: 1.5rem;
+    margin-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    font-size: 0.85rem;
+    color: var(--text-secondary-color);
+}
+
+/* --- 5. TÙY CHỌN SÁNG TẠO (PHÂN TÍCH ẢNH) --- */
+#analysis-options {
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+    animation: fadeIn 0.5s ease;
+}
+
+#analysis-options h4 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.75rem;
+}
+
+#analysis-options h4 i { margin-right: 0.5rem; }
+.option-item { margin-bottom: 1rem; }
+.option-item:last-child { margin-bottom: 0; }
+.option-item label { font-weight: 500; color: var(--text-color); }
+.option-item label i { color: var(--text-secondary-color); margin-right: 0.5rem; width: 20px; text-align: center; }
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-top: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: #252525;
+    color: var(--text-color);
+    font-size: 0.95rem;
+    font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+textarea.form-control { resize: vertical; }
+
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23BDBDBD%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E');
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: .65em auto;
+    padding-right: 2.5rem;
+}
+
+/* --- 6. TÙY CHỌN CHECKBOX (Ý TƯỞNG) --- */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.checkbox-container input[type="checkbox"] {
+    width: 1.2em;
+    height: 1.2em;
+    accent-color: var(--primary-color);
+    cursor: pointer;
+}
+
+.checkbox-container label {
+    margin-bottom: 0;
+    cursor: pointer;
+    color: var(--text-secondary-color);
+    font-size: 0.9rem;
+}
+
+/* --- 7. ANIMATIONS & UTILITIES --- */
+.hidden {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

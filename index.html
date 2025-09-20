@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nguyễn Phát - Prompt Forge</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/x-icon" href="icon.png">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="site-header">
+            <div class="logo">
+                <h1>Prompt Forge 🔨</h1>
+                <p class="subtitle">Rèn giũa ý tưởng thành kiệt tác</p>
+            </div>
+            <div class="header-actions">
+                <button id="settings-btn" class="settings-btn">
+                    <i class="fas fa-key"></i>
+                    <span>Quản lý Khóa API</span>
+                </button>
+            </div>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <h2>Công cụ Sáng tạo Prompt</h2>
+                <p class="section-description">Biến ý tưởng hoặc hình ảnh thành mô tả chi tiết và đầy nghệ thuật.</p>
+
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="tab-idea"><i class="fas fa-lightbulb"></i> Tạo từ Ý tưởng</button>
+                    <button class="tab-btn" data-tab="tab-image-analysis"><i class="fas fa-camera-retro"></i> Phân tích từ Ảnh</button>
+                </div>
+
+                <div class="tab-content-wrapper">
+                    <div id="tab-idea" class="tab-pane active">
+                        <label for="idea-input"><i class="fas fa-lightbulb"></i> Nhập ý tưởng của bạn:</label>
+                        <textarea id="idea-input" rows="5" placeholder="Ví dụ: một chiến binh nữ mặc giáp vàng đứng giữa chiến trường..."></textarea>
+                        <div class="checkbox-container">
+                            <input type="checkbox" id="prehistoric-checkbox-idea">
+                            <label for="prehistoric-checkbox-idea">Áp dụng Cấu trúc Tiền sử</label>
+                        </div>
+                    </div>
+                    <div id="tab-image-analysis" class="tab-pane">
+                         <label>Tải lên một ảnh để AI phân tích và sáng tạo lại prompt:</label>
+                         <div class="image-upload-box" id="image-analysis-dropzone">
+                             <input type="file" id="image-analysis-file" accept="image/*" class="file-input">
+                             <label for="image-analysis-file" class="file-label">
+                                 <i class="fas fa-upload"></i>
+                                 <span id="image-analysis-filename">Nhấn để chọn hoặc kéo thả ảnh</span>
+                             </label>
+                             <img id="image-analysis-preview" class="image-preview" alt="Image Preview"/>
+                             <button class="delete-image-btn" title="Xóa ảnh"><i class="fas fa-times"></i></button>
+                         </div>
+                         <div id="analysis-options" class="hidden">
+                            <h4><i class="fas fa-sliders-h"></i> Tùy chọn Sáng tạo</h4>
+                            <div class="option-item">
+                                <label for="change-style-select"><i class="fas fa-palette"></i> Thay đổi Style ảnh</label>
+                                <select id="change-style-select" class="form-control">
+                                    <option value="">Giữ nguyên Style gốc</option>
+                                    <option value="Photorealistic, cinematic">Chân thực, Điện ảnh</option>
+                                    <option value="Anime, vibrant, detailed">Anime / Hoạt hình</option>
+                                </select>
+                            </div>
+                            <div class="option-item">
+                                <label for="change-details-textarea"><i class="fas fa-edit"></i> Mô tả các thay đổi khác (bối cảnh, tư thế...)</label>
+                                <textarea id="change-details-textarea" class="form-control" rows="3" placeholder="Ví dụ: thay đổi bối cảnh thành bãi biển hoàng hôn..."></textarea>
+                            </div>
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="prehistoric-checkbox-analysis">
+                                <label for="prehistoric-checkbox-analysis">Áp dụng Cấu trúc Tiền sử</label>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+                
+                <div class="actions">
+                    <button id="generate-prompt-btn" class="primary-btn">
+                        <i class="fas fa-wand-magic-sparkles"></i> Tạo Prompt
+                    </button>
+                </div>
+                
+                <div id="prompt-output-container" class="hidden" style="margin-top: 1.5rem;">
+                    <label>Prompt Tiếng Việt (tham khảo):</label>
+                    <pre id="prompt-output-vi"></pre>
+                    <label style="margin-top: 1rem;">Prompt Tạo Ảnh:</label>
+                    <div class="prompt-result-wrapper">
+                        <pre id="prompt-output-en"></pre>
+                        <button id="copy-prompt-btn" class="copy-btn" title="Copy prompt Tiếng Anh"><i class="far fa-copy"></i></button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Quản lý Khóa API Google Gemini</h2>
+            <p>Khóa API sẽ được lưu an toàn ngay trên trình duyệt này.</p>
+            
+            <label for="gemini-api-key-input">Khóa API Google Gemini:</label>
+            <input type="password" id="gemini-api-key-input" placeholder="Dán Khóa API Gemini của bạn vào đây...">
+
+            <button id="save-api-key-btn" class="primary-btn">Lưu & Đóng</button>
+        </div>
+    </div>
+
+    <div id="custom-alert-modal" class="modal">
+        <div class="modal-content alert-content">
+            <p id="custom-alert-text"></p>
+            <button id="custom-alert-close-btn" class="primary-btn">OK</button>
+        </div>
+    </div>
+    
+    <footer class="site-footer">
+        <div class="footer-grid">
+            <div class="footer-about">
+                <h3>Prompt Forge</h3>
+                <p>Nơi những ý tưởng thô được rèn giũa thành các prompt mạnh mẽ và chi tiết, sẵn sàng tạo nên những kiệt tác nghệ thuật kỹ thuật số.</p>
+            </div>
+            <div class="footer-contact">
+                <h3>Thông tin liên hệ</h3>
+                <ul class="contact-list">
+                    <li><i class="fas fa-user"></i> Nguyễn Phát</li>
+                    <li><i class="fas fa-phone"></i> 0386 865 151</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Giá Rai, Bạc Liêu</li>
+                </ul>
+            </div>
+            <div class="footer-social">
+                <h3>Mạng xã hội</h3>
+                <div class="social-icons">
+                    <a href="https://www.facebook.com/nvphat92/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
+                    <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Prompt Forge. Design by Nguyễn Phát.</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
