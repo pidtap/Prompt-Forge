@@ -26,41 +26,92 @@
         <main>
             <div class="input-section">
                 <h2>Công cụ Sáng tạo Prompt</h2>
-                <p class="section-description">Biến ý tưởng hoặc hình ảnh thành mô tả chi tiết và đầy nghệ thuật.</p>
+                <p class="section-description">Biến ý tưởng hoặc hình ảnh thành mô tả chi tiết và đầy nghệ thuật cho AI.</p>
 
                 <div class="tab-buttons">
                     <button class="tab-btn active" data-tab="tab-idea"><i class="fas fa-lightbulb"></i> Tạo từ Ý tưởng</button>
-                    <button class="tab-btn" data-tab="tab-image-analysis"><i class="fas fa-camera-retro"></i> Phân tích từ Ảnh</button> 
+                    <button class="tab-btn" data-tab="tab-image"><i class="fas fa-camera-retro"></i> Tạo từ Ảnh</button> 
+                </div>
+
+                <div class="form-group main-selector">
+                    <label for="prompt-branch-selector"><i class="fas fa-sitemap"></i> Chọn Ngữ cảnh / Chủ đề cho AI:</label>
+                    <select id="prompt-branch-selector" class="form-control"></select>
                 </div>
 
                 <div class="tab-content-wrapper">
                     <div id="tab-idea" class="tab-pane active">
                         <label for="idea-input"><i class="fas fa-lightbulb"></i> Nhập ý tưởng chính của bạn:</label>
-                        <textarea id="idea-input" rows="3" placeholder="Ví dụ: một chiến binh nữ mặc giáp vàng đứng giữa chiến trường..."></textarea>
+                        <textarea id="idea-input" rows="4" placeholder="Ví dụ: một chiến binh rồng trong bộ giáp Hắc Diện Vàng đứng giữa khu rừng tương lai..."></textarea>
                         
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="prehistoric-checkbox-idea">
-                            <label for="prehistoric-checkbox-idea">Áp dụng Cấu trúc Tiền sử</label>
-                            
-                            <input type="checkbox" id="face-ref-checkbox-idea" style="margin-left: 1.5rem;">
-                            <label for="face-ref-checkbox-idea">Bắt buộc dùng mặt tham chiếu</label>
-                        </div>
-                        
-                        <div class="creative-options-container" id="creative-options-idea">
-                            <div class="options-header">
-                                <h4><i class="fas fa-drafting-compass"></i> Tùy chọn Sáng tạo Chi tiết</h4>
-                                <i class="fas fa-chevron-right arrow-icon"></i>
-                            </div>
-                            <div class="options-content">
+                        <div class="tech-options">
+                            <h4><i class="fas fa-sliders-h"></i> Tùy chọn Kỹ thuật (tùy chọn)</h4>
+                            <div class="tech-options-grid">
+                                <div class="form-group">
+                                    <label for="style-idea">1. Style ảnh</label>
+                                    <select id="style-idea" class="form-control">
+                                        <option value="">AI Tự quyết định</option>
+                                        <option value="photorealistic">Ảnh Chân thực</option>
+                                        <option value="cinematic">Điện ảnh</option>
+                                        <option value="digital art">Nghệ thuật số</option>
+                                        <option value="anime">Anime / Manga</option>
+                                        <option value="3D render">3D Render</option>
+                                        <option value="fantasy">Fantasy</option>
+                                        <option value="watercolor">Tranh màu nước</option>
+                                        <option value="oil painting">Tranh sơn dầu</option>
+                                    </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="layout-idea">2. Bố cục</label>
+                                    <select id="layout-idea" class="form-control">
+                                        <option value="">AI Tự quyết định</option>
+                                        <option value="rule of thirds">Quy tắc 1/3</option>
+                                        <option value="centered">Đối tượng ở giữa</option>
+                                        <option value="symmetry">Đối xứng</option>
+                                        <option value="dynamic angle">Góc máy năng động</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="angle-idea">3. Góc nhìn</label>
+                                    <select id="angle-idea" class="form-control">
+                                        <option value="">AI Tự quyết định</option>
+                                        <option value="eye-level shot">Ngang tầm mắt</option>
+                                        <option value="low-angle shot">Góc từ dưới lên</option>
+                                        <option value="high-angle shot">Góc từ trên xuống</option>
+                                        <option value="close-up shot">Cận cảnh</option>
+                                        <option value="full shot">Toàn thân</option>
+                                        <option value="long shot">Cảnh rộng</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ratio-idea">4. Tỉ lệ khung ảnh</label>
+                                    <select id="ratio-idea" class="form-control">
+                                        <option value="">AI Tự quyết định</option>
+                                        <option value="aspect ratio 16:9">Ngang (16:9)</option>
+                                        <option value="aspect ratio 9:16">Dọc (9:16)</option>
+                                        <option value="aspect ratio 1:1">Vuông (1:1)</option>
+                                        <option value="aspect ratio 4:3">Cổ điển (4:3)</option>
+                                        <option value="aspect ratio 21:9">Điện ảnh (21:9)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quality-idea">5. Chất lượng ảnh</label>
+                                    <select id="quality-idea" class="form-control">
+                                        <option value="">AI Tự quyết định</option>
+                                        <option value="8K">Chất lượng 8K</option>
+                                        <option value="hyperdetailed">Siêu chi tiết</option>
+                                        <option value="sharp focus">Lấy nét sắc cạnh</option>
+                                        <option value="soft focus">Lấy nét mềm mại</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div id="tab-image-analysis" class="tab-pane">
-                         <label>Tải lên một ảnh để AI phân tích:</label>
-                         <div class="image-upload-box" id="image-analysis-dropzone">
-                             <input type="file" id="image-analysis-file" accept="image/*" class="file-input">
-                             <label for="image-analysis-file" class="file-label">
+                    <div id="tab-image" class="tab-pane">
+                         <label>Tải lên một ảnh để AI phân tích và mô tả:</label>
+                         <div class="image-upload-box" id="image-dropzone">
+                             <input type="file" id="image-file-input" accept="image/*" class="file-input">
+                             <label for="image-file-input" class="file-label">
                                  <i class="fas fa-upload"></i>
                                  <span>Nhấn để chọn hoặc kéo thả ảnh</span>
                              </label>
@@ -68,27 +119,67 @@
                              <button class="delete-image-btn" title="Xóa ảnh"><i class="fas fa-times"></i></button>
                          </div>
 
-                         <div class="actions" style="justify-content: center; margin-bottom: 1rem;">
-                            <button id="analyze-image-btn" class="secondary-btn" disabled>
-                                <i class="fas fa-microscope"></i> Phân tích Ảnh
-                            </button>
-                        </div>
-                         
-                         <div class="checkbox-container">
-                            <input type="checkbox" id="prehistoric-checkbox-analysis">
-                            <label for="prehistoric-checkbox-analysis">Áp dụng Cấu trúc Tiền sử</label>
-
-                            <input type="checkbox" id="face-ref-checkbox-analysis" style="margin-left: 1.5rem;">
-                            <label for="face-ref-checkbox-analysis">Bắt buộc dùng mặt tham chiếu</label>
-                        </div>
-
-                         <div class="creative-options-container" id="creative-options-analysis">
-                            <div class="options-header">
-                                <h4><i class="fas fa-drafting-compass"></i> Tùy chọn Sáng tạo & Sửa đổi</h4>
-                                <i class="fas fa-chevron-right arrow-icon"></i>
-                            </div>
-                            <div class="options-content">
+                         <div class="tech-options">
+                            <h4><i class="fas fa-sliders-h"></i> Tùy chọn Kỹ thuật (tùy chọn)</h4>
+                            <div class="tech-options-grid">
+                                <div class="form-group">
+                                    <label for="style-image">1. Style ảnh</label>
+                                    <select id="style-image" class="form-control">
+                                        <option value="">Giữ nguyên / AI quyết định</option>
+                                        <option value="photorealistic">Ảnh Chân thực</option>
+                                        <option value="cinematic">Điện ảnh</option>
+                                        <option value="digital art">Nghệ thuật số</option>
+                                        <option value="anime">Anime / Manga</option>
+                                        <option value="3D render">3D Render</option>
+                                        <option value="fantasy">Fantasy</option>
+                                        <option value="watercolor">Tranh màu nước</option>
+                                        <option value="oil painting">Tranh sơn dầu</option>
+                                    </select>
                                 </div>
+                                <div class="form-group">
+                                    <label for="layout-image">2. Bố cục</label>
+                                    <select id="layout-image" class="form-control">
+                                        <option value="">Giữ nguyên / AI quyết định</option>
+                                        <option value="rule of thirds">Quy tắc 1/3</option>
+                                        <option value="centered">Đối tượng ở giữa</option>
+                                        <option value="symmetry">Đối xứng</option>
+                                        <option value="dynamic angle">Góc máy năng động</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="angle-image">3. Góc nhìn</label>
+                                    <select id="angle-image" class="form-control">
+                                        <option value="">Giữ nguyên / AI quyết định</option>
+                                        <option value="eye-level shot">Ngang tầm mắt</option>
+                                        <option value="low-angle shot">Góc từ dưới lên</option>
+                                        <option value="high-angle shot">Góc từ trên xuống</option>
+                                        <option value="close-up shot">Cận cảnh</option>
+                                        <option value="full shot">Toàn thân</option>
+                                        <option value="long shot">Cảnh rộng</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="ratio-image">4. Tỉ lệ khung ảnh</label>
+                                    <select id="ratio-image" class="form-control">
+                                        <option value="">Giữ nguyên / AI quyết định</option>
+                                        <option value="aspect ratio 16:9">Ngang (16:9)</option>
+                                        <option value="aspect ratio 9:16">Dọc (9:16)</option>
+                                        <option value="aspect ratio 1:1">Vuông (1:1)</option>
+                                        <option value="aspect ratio 4:3">Cổ điển (4:3)</option>
+                                        <option value="aspect ratio 21:9">Điện ảnh (21:9)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="quality-image">5. Chất lượng ảnh</label>
+                                    <select id="quality-image" class="form-control">
+                                        <option value="">Giữ nguyên / AI quyết định</option>
+                                        <option value="8K">Chất lượng 8K</option>
+                                        <option value="hyperdetailed">Siêu chi tiết</option>
+                                        <option value="sharp focus">Lấy nét sắc cạnh</option>
+                                        <option value="soft focus">Lấy nét mềm mại</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -134,32 +225,7 @@
     </div>
     
     <footer class="site-footer">
-        <div class="footer-grid">
-            <div class="footer-about">
-                <h3>Prompt Forge</h3>
-                <p>Nơi những ý tưởng thô được rèn giũa thành các prompt mạnh mẽ và chi tiết, sẵn sàng tạo nên những kiệt tác nghệ thuật kỹ thuật số.</p>
-            </div>
-            <div class="footer-contact">
-                <h3>Thông tin liên hệ</h3>
-                <ul class="contact-list">
-                    <li><i class="fas fa-user"></i> Nguyễn Phát</li>
-                    <li><i class="fas fa-phone"></i> 0386 865 151</li>
-                    <li><i class="fas fa-map-marker-alt"></i> Giá Rai, Bạc Liêu</li>
-                </ul>
-            </div>
-            <div class="footer-social">
-                <h3>Mạng xã hội</h3>
-                <div class="social-icons">
-                    <a href="https://www.facebook.com/nvphat92/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" aria-label="Youtube"><i class="fab fa-youtube"></i></a>
-                    <a href="#" aria-label="Tiktok"><i class="fab fa-tiktok"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Prompt Forge. Design by Nguyễn Phát.</p>
-        </div>
-    </footer>
+        </footer>
 
     <script type="module" src="js/main.js"></script>
 </body>

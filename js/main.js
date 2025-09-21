@@ -1,5 +1,15 @@
 import { promptConfig, outputRules } from './info.js';
 
+// Bản đồ dịch thuật để Việt hóa giao diện
+const translationMap = {
+    "modern_human": "Con người Hiện đại",
+    "prehistoric_human": "Con người Tiền sử",
+    "modern_creature": "Sinh vật Hiện đại",
+    "prehistoric_creature": "Sinh vật Tiền sử",
+    "landscape_scene": "Phong cảnh / Môi trường"
+};
+
+
 document.addEventListener('DOMContentLoaded', () => {
     // --- Lấy các phần tử DOM ---
     const generatePromptBtn = document.getElementById('generate-prompt-btn');
@@ -16,22 +26,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const customAlertModal = document.getElementById('custom-alert-modal');
     const customAlertText = document.getElementById('custom-alert-text');
     const customAlertCloseBtn = document.getElementById('custom-alert-close-btn');
+
+    // DOM cho giao diện mới
     const tabButtons = document.querySelectorAll('.tab-btn');
     const tabPanes = document.querySelectorAll('.tab-pane');
-    const mainContent = document.querySelector('main');
-
-    // DOM cho Tab "Ý tưởng"
+    const branchSelector = document.getElementById('prompt-branch-selector');
     const ideaInput = document.getElementById('idea-input');
-    const prehistoricCheckboxIdea = document.getElementById('prehistoric-checkbox-idea');
-    const optionsContainerIdea = document.querySelector('#creative-options-idea .options-content');
-    const faceRefCheckboxIdea = document.getElementById('face-ref-checkbox-idea');
-
-    // DOM cho Tab "Phân tích ảnh"
-    const imageAnalysisFileInput = document.getElementById('image-analysis-file');
-    const prehistoricCheckboxAnalysis = document.getElementById('prehistoric-checkbox-analysis');
-    const optionsContainerAnalysis = document.querySelector('#creative-options-analysis .options-content');
-    const analyzeImageBtn = document.getElementById('analyze-image-btn');
-    const faceRefCheckboxAnalysis = document.getElementById('face-ref-checkbox-analysis');
+    const imageFileInput = document.getElementById('image-file-input');
+    const imageDropzone = document.getElementById('image-dropzone');
+    const mainContent = document.querySelector('main');
 
     // --- CÁC HÀM TIỆN ÍCH & CỐT LÕI ---
 
@@ -41,69 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
         customAlertModal.style.display = 'flex';
     }
 
-    function resetImageUpload(fileInput) {
-        const uploadBox = fileInput.closest('.image-upload-box');
-        if (!uploadBox) return;
-        const preview = uploadBox.querySelector('.image-preview');
-        fileInput.value = '';
-        if (preview) preview.src = '';
-        if (uploadBox) uploadBox.classList.remove('has-image');
-        if (analyzeImageBtn) analyzeImageBtn.disabled = true;
+    function formatDisplayName(key) {
+        return translationMap[key] || key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
     }
-
-    function setupImagePreview(fileInputId) {
-        const fileInput = document.getElementById(fileInputId);
-        if (!fileInput) return;
-        const uploadBox = fileInput.closest('.image-upload-box');
-        const preview = uploadBox.querySelector('.image-preview');
-        fileInput.addEventListener('change', () => {
-            const file = fileInput.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    preview.src = e.target.result;
-                    uploadBox.classList.add('has-image');
-                    if (analyzeImageBtn) analyzeImageBtn.disabled = false;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                resetImageUpload(fileInput);
-            }
-        });
-    }
-
-    function populateFormWithData(data, template, idPrefix) {
-        function traverseAndFill(dataObj, templateObj, pathPrefix) {
-            for (const key in dataObj) {
-                if (!templateObj || !templateObj[key]) continue;
-                const currentPath = `${pathPrefix}-${key.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                const currentDataNode = dataObj[key];
-                const currentTemplateNode = templateObj[key];
-                if (typeof currentTemplateNode.value === 'undefined') {
-                    traverseAndFill(currentDataNode, currentTemplateNode, currentPath);
-                } else {
-                    const valueToSet = currentDataNode.value;
-                    if (valueToSet) {
-                        if (currentTemplateNode.options) {
-                            const radioToSelect = document.querySelector(`input[name="${currentPath}"][value="${valueToSet}"]`);
-                            if (radioToSelect) {
-                                radioToSelect.checked = true;
-                            } else {
-                                console.warn(`AI trả về giá trị "${valueToSet}" cho mục ${key}, không phải là một lựa chọn hợp lệ.`);
-                            }
-                        } else {
-                            const element = document.getElementById(currentPath);
-                            if (element) {
-                                element.value = valueToSet;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        traverseAndFill(data, template, idPrefix);
-    }
-
+    
     async function fileToGenerativePart(file) {
         const base64EncodedDataPromise = new Promise((resolve) => {
             const reader = new FileReader();
@@ -112,92 +56,37 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         return { inlineData: { data: await base64EncodedDataPromise, mimeType: file.type } };
     }
-
-    function buildFormFields(obj, pathPrefix) {
-        let html = '';
-        for (const key in obj) {
-            const valueObj = obj[key];
-            const currentPath = `${pathPrefix}-${key.replace(/[^a-zA-Z0-9]/g, '_')}`;
-            if (typeof valueObj.value === 'undefined') {
-                html += `<fieldset><legend>${key}<i class="fas fa-chevron-right arrow-icon"></i></legend><div class="fieldset-content">`;
-                html += buildFormFields(valueObj, currentPath);
-                html += `</div></fieldset>`;
-            } else {
-                html += `<div class="form-group"><label for="${currentPath}">${key}</label>`;
-                if (valueObj.options) {
-                    const options = valueObj.options.split(',').map(opt => opt.trim());
-                    html += `<div class="radio-group-container">`;
-                    options.forEach((opt, index) => {
-                        const radioId = `${currentPath}-${index}`;
-                        html += `<div class="radio-option"><input type="radio" id="${radioId}" name="${currentPath}" value="${opt}"><span class="radio-custom"></span><label for="${radioId}">${opt}</label></div>`;
-                    });
-                    html += `</div>`;
-                } else {
-                    html += `<input type="text" id="${currentPath}" class="form-control" placeholder="${valueObj.placeholder || ''}">`;
-                }
-                html += `</div>`;
+    
+    function setupImagePreview() {
+        const preview = imageDropzone.querySelector('.image-preview');
+        imageFileInput.addEventListener('change', () => {
+            const file = imageFileInput.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    preview.src = e.target.result;
+                    imageDropzone.classList.add('has-image');
+                };
+                reader.readAsDataURL(file);
             }
-        }
-        return html;
+        });
+    }
+    
+    function resetImageUpload() {
+        const preview = imageDropzone.querySelector('.image-preview');
+        imageFileInput.value = '';
+        if (preview) preview.src = '';
+        imageDropzone.classList.remove('has-image');
     }
 
-    function renderCreativeOptions(themeKey, container, idPrefix) {
-        const themeConfig = promptConfig[themeKey] || promptConfig.general;
-        container.innerHTML = buildFormFields(themeConfig, idPrefix);
-    }
-
-    function rebuildThemeFromForm(themeKey, idPrefix) {
-        const baseTheme = JSON.parse(JSON.stringify(promptConfig[themeKey]));
-        function traverseAndUpdate(obj, pathPrefix) {
-            for (const key in obj) {
-                const currentPath = `${pathPrefix}-${key.replace(/[^a-zA-Z0-9]/g, '_')}`;
-                if (typeof obj[key].value === 'undefined') {
-                    traverseAndUpdate(obj[key], currentPath);
-                } else {
-                    if (obj[key].options) {
-                        const checkedRadio = document.querySelector(`input[name="${currentPath}"]:checked`);
-                        if (checkedRadio) obj[key].value = checkedRadio.value;
-                    } else {
-                        const element = document.getElementById(currentPath);
-                        if (element && element.value) obj[key].value = element.value;
-                    }
-                }
-            }
-        }
-        traverseAndUpdate(baseTheme, idPrefix);
-        return baseTheme;
-    }
-
-    function handleAccordionClick(event) {
-        if (event.target.closest('input, .radio-option')) return;
-        const header = event.target.closest('.options-header, legend');
-        if (!header) return;
-        event.stopPropagation();
-        const content = header.nextElementSibling;
-        if (!content) return;
-        const isCurrentlyExpanded = header.classList.contains('expanded');
-        if (isCurrentlyExpanded) {
-            header.classList.remove('expanded');
-            content.classList.remove('expanded');
-            content.querySelectorAll('legend').forEach(h => h.classList.remove('expanded'));
-            content.querySelectorAll('.fieldset-content').forEach(c => c.classList.remove('expanded'));
-        } else {
-            header.classList.add('expanded');
-            content.classList.add('expanded');
-        }
-    }
-
-    function handleInputChange(event) {
-        const radioElement = event.target.closest('input[type="radio"]');
-        if (!radioElement) return;
-        setTimeout(() => {
-            const fieldsetContent = radioElement.closest('.fieldset-content');
-            if (fieldsetContent && fieldsetContent.classList.contains('expanded')) {
-                const legend = fieldsetContent.previousElementSibling;
-                if (legend) legend.classList.remove('expanded');
-                fieldsetContent.classList.remove('expanded');
-            }
-        }, 150);
+    function populateSelector() {
+        const branchKeys = Object.keys(promptConfig).filter(key => key !== 'common');
+        branchKeys.forEach(key => {
+            const option = document.createElement('option');
+            option.value = key;
+            option.textContent = formatDisplayName(key);
+            branchSelector.appendChild(option);
+        });
     }
 
     async function callGeminiAPI(parts) {
@@ -219,15 +108,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- CÀI ĐẶT EVENT LISTENERS ---
-    optionsContainerIdea.parentElement.addEventListener('click', handleAccordionClick);
-    optionsContainerAnalysis.parentElement.addEventListener('click', handleAccordionClick);
-    optionsContainerIdea.addEventListener('change', handleInputChange);
-    optionsContainerAnalysis.addEventListener('change', handleInputChange);
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const targetTab = button.dataset.tab;
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            tabPanes.forEach(pane => pane.classList.toggle('active', pane.id === targetTab));
+        });
+    });
 
-    prehistoricCheckboxIdea.addEventListener('change', () => renderCreativeOptions(prehistoricCheckboxIdea.checked ? 'prehistoric' : 'general', optionsContainerIdea, 'idea'));
-    prehistoricCheckboxAnalysis.addEventListener('change', () => renderCreativeOptions(prehistoricCheckboxAnalysis.checked ? 'prehistoric' : 'general', optionsContainerAnalysis, 'analysis'));
-
-    customAlertCloseBtn.addEventListener('click', () => { customAlertModal.style.display = 'none'; });
     settingsBtn.addEventListener('click', () => {
         geminiApiKeyInput.value = localStorage.getItem('geminiApiKey') || '';
         modal.style.display = 'flex';
@@ -238,40 +128,18 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
         showCustomAlert('Khóa API Gemini đã được lưu!', 'success');
     });
-
+    customAlertCloseBtn.addEventListener('click', () => { customAlertModal.style.display = 'none'; });
+    
     resetBtn.addEventListener('click', () => {
         ideaInput.value = '';
-        prehistoricCheckboxIdea.checked = false;
-        faceRefCheckboxIdea.checked = false;
-        prehistoricCheckboxAnalysis.checked = false;
-        faceRefCheckboxAnalysis.checked = false;
-        resetImageUpload(imageAnalysisFileInput);
-        renderCreativeOptions('general', optionsContainerIdea, 'idea');
-        renderCreativeOptions('general', optionsContainerAnalysis, 'analysis');
+        resetImageUpload();
+        branchSelector.selectedIndex = 0;
         promptOutputContainer.classList.add('hidden');
-        const activeTabId = document.querySelector('.tab-pane.active').id;
-        if (activeTabId === 'tab-image-analysis') {
-            generatePromptBtn.disabled = true;
+        if (!document.querySelector('#tab-idea').classList.contains('active')) {
+            tabButtons[0].click();
         }
-    });
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            const targetTab = button.dataset.tab;
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            tabPanes.forEach(pane => pane.classList.toggle('active', pane.id === targetTab));
-            if (targetTab === 'tab-image-analysis') {
-                generatePromptBtn.disabled = true;
-            } else {
-                generatePromptBtn.disabled = false;
-            }
-        });
-    });
-
-    mainContent.addEventListener('click', (event) => {
-        const deleteBtn = event.target.closest('.delete-image-btn');
-        if (deleteBtn) resetImageUpload(deleteBtn.closest('.image-upload-box').querySelector('.file-input'));
+        // Reset các dropdown tùy chọn
+        document.querySelectorAll('.tech-options-grid select').forEach(select => select.selectedIndex = 0);
     });
 
     copyPromptBtn.addEventListener('click', () => {
@@ -285,118 +153,117 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1500);
         });
     });
-
-    if (analyzeImageBtn) {
-        analyzeImageBtn.addEventListener('click', async () => {
-            const imageFile = imageAnalysisFileInput.files[0];
-            if (!imageFile) return showCustomAlert("Vui lòng tải lên một ảnh để phân tích!", 'error');
-            const geminiApiKey = localStorage.getItem('geminiApiKey');
-            if (!geminiApiKey) return showCustomAlert('Vui lòng vào "Quản lý Khóa API" để nhập Khóa API Gemini!', 'error');
-            analyzeImageBtn.disabled = true;
-            analyzeImageBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang phân tích...`;
-            try {
-                const themeKey = prehistoricCheckboxAnalysis.checked ? 'prehistoric' : 'general';
-                const emptyThemeStructure = promptConfig[themeKey];
-                const analysisInstruction = `As an expert image analyst, describe the provided image in detail. Pay close attention to the main subject, background, lighting, and overall style. If the subject is non-human (animal, object), focus on its physical characteristics instead of human attributes (gender, clothing). After your analysis, you MUST format your complete description into a JSON object that strictly follows this structure. Fill every "value" property with your findings. Do not leave any values empty. Your entire response must be ONLY the JSON object. **JSON Structure to use for formatting:** ${JSON.stringify(emptyThemeStructure, null, 2)}`;
-                const parts = [{ text: analysisInstruction }, await fileToGenerativePart(imageFile)];
-                let responseText = await callGeminiAPI(parts);
-                const startIndex = responseText.indexOf('{'),
-                    endIndex = responseText.lastIndexOf('}');
-                if (startIndex === -1 || endIndex === -1) throw new Error("AI không trả về dữ liệu JSON hợp lệ.");
-                const jsonString = responseText.substring(startIndex, endIndex + 1);
-                const analysisData = JSON.parse(jsonString);
-                populateFormWithData(analysisData, emptyThemeStructure, 'analysis');
-                showCustomAlert('Đã phân tích xong! Bạn có thể xem và chỉnh sửa kết quả bên dưới.', 'success');
-                const optionsHeader = optionsContainerAnalysis.parentElement.querySelector('.options-header');
-                if (optionsHeader && !optionsHeader.classList.contains('expanded')) optionsHeader.click();
-                generatePromptBtn.disabled = false;
-            } catch (error) {
-                showCustomAlert(`Lỗi khi phân tích ảnh: ${error.message}`, 'error');
-                generatePromptBtn.disabled = true;
-            } finally {
-                analyzeImageBtn.disabled = false;
-                analyzeImageBtn.innerHTML = `<i class="fas fa-microscope"></i> Phân tích Ảnh`;
-            }
-        });
-    }
+    
+    mainContent.addEventListener('click', (event) => {
+        const deleteBtn = event.target.closest('.delete-image-btn');
+        if (deleteBtn) {
+            resetImageUpload();
+        }
+    });
 
     generatePromptBtn.addEventListener('click', async () => {
         promptOutputContainer.classList.add('hidden');
         const activeTabId = document.querySelector('.tab-pane.active').id;
         const geminiApiKey = localStorage.getItem('geminiApiKey');
         if (!geminiApiKey) return showCustomAlert('Vui lòng vào "Quản lý Khóa API" để nhập Khóa API Gemini!', 'error');
-        let partsForGemini = [];
-        let mainInstruction = '';
+
         generatePromptBtn.disabled = true;
         generatePromptBtn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Đang tạo...`;
+        
         try {
-            let userFilledTheme;
-            let themeKey;
+            const selectedBranchKey = branchSelector.value;
+            const emptyStructure = {
+                common: promptConfig.common,
+                [selectedBranchKey]: promptConfig[selectedBranchKey]
+            };
+
+            // *** LẤY DỮ LIỆU TÙY CHỌN KỸ THUẬT TỪ NGƯỜI DÙNG ***
+            const tabSuffix = activeTabId.includes('idea') ? 'idea' : 'image';
+            const userPreferences = {
+                "Style": document.getElementById(`style-${tabSuffix}`).value,
+                "Layout": document.getElementById(`layout-${tabSuffix}`).value,
+                "Viewing Angle": document.getElementById(`angle-${tabSuffix}`).value,
+                "Aspect Ratio": document.getElementById(`ratio-${tabSuffix}`).value,
+                "Quality": document.getElementById(`quality-${tabSuffix}`).value,
+            };
+
+            // Tạo chuỗi chỉ chứa các tùy chọn người dùng đã chọn
+            let preferencesText = "";
+            const chosenPreferences = Object.entries(userPreferences)
+                .filter(([key, value]) => value) // Lọc ra những cái có giá trị
+                .map(([key, value]) => `- ${key}: ${value}`)
+                .join("\n");
+
+            if (chosenPreferences) {
+                preferencesText = `\n**User's Technical Preferences (IMPORTANT: You MUST follow these):**\n${chosenPreferences}\n`;
+            }
+
+            let partsForGemini = [];
+            let mainInstruction = '';
+
             if (activeTabId === 'tab-idea') {
                 const idea = ideaInput.value.trim();
                 if (!idea) throw new Error("Vui lòng nhập ý tưởng chính!");
-                themeKey = prehistoricCheckboxIdea.checked ? 'prehistoric' : 'general';
-                userFilledTheme = rebuildThemeFromForm(themeKey, 'idea');
-                mainInstruction = `Your primary task is to write two descriptive paragraphs (one Vietnamese, one English).
-
-                **--- KEY CONTEXT RULE ---**
-                The provided JSON Structure (Attributes) defines the **overall theme and context** (e.g., general, prehistoric). You MUST interpret the User's Core Idea **THROUGH THE LENS OF THIS THEME**. If the structure's theme is 'prehistoric', you must describe a prehistoric version of the user's idea. For example, if the idea is "an elephant", you must describe a mammoth or another appropriate prehistoric elephant ancestor, NOT a modern one.
-
-                **User's Core Idea**: "${idea}"
                 
-                **Attributes (JSON Structure with THEME)**: 
-                ${JSON.stringify(userFilledTheme, null, 2)}
-
-                **Your Instructions**:
-                1. Apply the **KEY CONTEXT RULE** above.
-                2. Creatively fill in any attribute where the "value" is empty (e.g., "value": "") to be consistent with the core idea and the chosen theme.
-                3. Synthesize ALL attributes (both pre-filled and the ones you generated) into a single, rich paragraph.
-                4. Provide this paragraph in both Vietnamese and English.
-                5. Adhere strictly to the Output Rules.
+                mainInstruction = `You are an expert prompt engineer. Your task is to expand a user's simple idea into a detailed specification.
                 
+                **User's Core Idea:** "${idea}"
+                **Contextual Theme:** "${selectedBranchKey}"
+                ${preferencesText}
+                **Instructions:**
+                1. Analyze the user's idea, contextual theme, and especially their technical preferences if provided.
+                2. Mentally fill out the JSON structure below with creative details that match all the inputs.
+                3. Use ALL details from your mental model to write two rich, descriptive paragraphs (one Vietnamese, one English). The final English prompt must incorporate the user's technical preferences.
+                4. Adhere strictly to the Output Rules.
+
+                **JSON Structure Guide:** ${JSON.stringify(emptyStructure, null, 2)}
                 ${outputRules}`;
                 partsForGemini.push({ text: mainInstruction });
-            } else if (activeTabId === 'tab-image-analysis') {
-                themeKey = prehistoricCheckboxAnalysis.checked ? 'prehistoric' : 'general';
-                userFilledTheme = rebuildThemeFromForm(themeKey, 'analysis');
-                mainInstruction = `You are a creative writer. Based on the detailed information in the following completed JSON object, weave all details into a single, flowing descriptive paragraph (in Vietnamese and English). **JSON Data to Use**: ${JSON.stringify(userFilledTheme, null, 2)} ${outputRules}`;
-                partsForGemini.push({ text: mainInstruction });
-            }
-            const responseText = await callGeminiAPI(partsForGemini);
-            const startIndex = responseText.indexOf('{'),
-                endIndex = responseText.lastIndexOf('}');
-            if (startIndex === -1 || endIndex === -1) throw new Error("AI đã trả về dữ liệu không hợp lệ. Vui lòng thử lại.");
-            const jsonString = responseText.substring(startIndex, endIndex + 1);
-            const prompts = JSON.parse(jsonString);
-            
-            let finalEnglishPrompt = prompts.english;
-            const isFaceRefChecked = (activeTabId === 'tab-idea') ? faceRefCheckboxIdea.checked : faceRefCheckboxAnalysis.checked;
-            
-            if (isFaceRefChecked) {
-                const mandatorySentence = "If a face reference image is provided, use only the exact face from the reference with 99.99% similarity (facial features, hairstyle, and hair color unchanged). Do NOT copy body shape, outfit, or pose from the reference image. If no reference is given, use the text description below.";
-                finalEnglishPrompt = `${mandatorySentence}\n\n${finalEnglishPrompt}`;
+
+            } else if (activeTabId === 'tab-image') {
+                const imageFile = imageFileInput.files[0];
+                if (!imageFile) throw new Error("Vui lòng tải lên một hình ảnh!");
+                
+                mainInstruction = `You are an expert image analyst and prompt engineer. Your task is to analyze a user's image and describe it in extreme detail.
+
+                **Contextual Theme:** "${selectedBranchKey}"
+                ${preferencesText}
+                **Instructions:**
+                1. Thoroughly analyze the provided image.
+                2. If the user provided technical preferences, you must creatively reinterpret the image according to those preferences. For example, if they chose "Anime style", describe the image as if it were an anime scene. If they chose a new aspect ratio, describe what might be visible in the wider/taller frame.
+                3. Mentally fill out the JSON structure below based on your analysis and the user's preferences.
+                4. Use ALL details to write two rich, descriptive paragraphs (one Vietnamese, one English).
+                5. Adhere strictly to the Output Rules.
+
+                **JSON Structure Guide:** ${JSON.stringify(emptyStructure, null, 2)}
+                ${outputRules}`;
+                
+                const imagePart = await fileToGenerativePart(imageFile);
+                partsForGemini.push({ text: mainInstruction }, imagePart);
             }
 
+            // Gọi API và hiển thị kết quả
+            const responseText = await callGeminiAPI(partsForGemini);
+            const startIndex = responseText.indexOf('{');
+            const endIndex = responseText.lastIndexOf('}');
+            if (startIndex === -1 || endIndex === -1) throw new Error("AI đã trả về dữ liệu không hợp lệ. Vui lòng thử lại.");
+            
+            const jsonString = responseText.substring(startIndex, endIndex + 1);
+            const prompts = JSON.parse(jsonString);
+
             promptOutputVi.textContent = prompts.vietnamese;
-            promptOutputEn.textContent = finalEnglishPrompt.trim();
+            promptOutputEn.textContent = prompts.english.trim();
             promptOutputContainer.classList.remove('hidden');
+
         } catch (error) {
             showCustomAlert(`Lỗi khi tạo prompt: ${error.message}`, 'error');
         } finally {
-            const activeTabId = document.querySelector('.tab-pane.active').id;
-            if (activeTabId === 'tab-idea' || !generatePromptBtn.disabled) {
-                generatePromptBtn.disabled = false;
-            }
+            generatePromptBtn.disabled = false;
             generatePromptBtn.innerHTML = `<i class="fas fa-wand-magic-sparkles"></i> Tạo Prompt`;
         }
     });
 
     // --- KHỞI TẠO BAN ĐẦU ---
-    setupImagePreview('image-analysis-file');
-    renderCreativeOptions('general', optionsContainerIdea, 'idea');
-    renderCreativeOptions('general', optionsContainerAnalysis, 'analysis');
-
-    if (document.querySelector('#tab-image-analysis.active')) {
-        generatePromptBtn.disabled = true;
-    }
+    populateSelector();
+    setupImagePreview();
 });
